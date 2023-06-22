@@ -21,8 +21,8 @@
   
   .gallery__item {
     position: relative;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(4, 4, 4, 0.2),
+    0 1px 1px 0 rgba(3, 3, 3, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   }
   
   .gallery__link:hover{
@@ -56,5 +56,91 @@
   
   .info-item {
     display: flex;
+  }
+    
+  .gallery__link:hover .info {
+    opacity: 1;
+    transform: scale(1.03)
+  }
+  
+  .gallery__link {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    height: 100%;
+    transition: transform var(--animation-duration) var(--timing-function);
+  }
+  
+  .gallery__link:hover {
+    cursor: zoom-in;
+  }
+  
+  ul, p {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  body {
+    background-color: rgb(47, 47, 59);
+    color: white;
+    font-family: 'Raleway';
+    padding: 40px;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  #search-form{
+    display: flex;
+    gap: 30px;
+    padding: 10px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: fixed;
+    background-color: rgba(55, 74, 81, 0.549);
+    z-index: 50;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  #search-form input{
+    margin-right: 10px;
+    font: inherit;
+    padding: 8px;
+    max-width: 320px;
+    border-radius: 5px;
+    min-width: 300px;
+    height: 40px;
+    border: none;
+    box-shadow: 5px 5px 5px;
+    border-color: rgb(96, 160, 171);
+  }
+  
+  #search-form button{
+    border-radius: 5px;
+    background-color: rgb(12, 116, 135);
+    width: 90px;
+    height: 42px;
+    font-weight: 700;
+    box-shadow: 5px 5px 5px;
+  }
+  
+  .loading {
+    display: none;
+    background-color: #c9c9c9;
+    width: 200px;
+    margin: 200px auto;
+    text-align: center;
+  }
+  
+  .show {
+    display: block;
   }
   

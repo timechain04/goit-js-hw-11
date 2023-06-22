@@ -1,6 +1,6 @@
 import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
-import Notiflix from 'notiflix';
+import { Notify } from 'notiflix';
 import _ from 'lodash';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -21,8 +21,8 @@ const lightBox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-formInput.addEventListener('input', (e) => {
-  inputValue = e.target.value;
+formInput.addEventListener('input', (evt) => {
+  inputValue = evt.target.value;
   if (inputValue.length > 0) {
     formBtn.removeAttribute('disabled');
   } else {
@@ -44,8 +44,8 @@ const getImages = (value) => {
   });
 };
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
+form.addEventListener('submit', evt => {
+  evt.preventDefault();
   gallery.innerHTML = '';
   pageCounter = 1;
   getImages(inputValue)
@@ -54,9 +54,9 @@ form.addEventListener('submit', e => {
         pagesCount = Math.ceil(totalHits / perPage);
         if (hits.length === 0) {
           gallery.innerHTML = '';
-          return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+          return Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         }
-        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+        Notify.success(`Hooray! We found ${totalHits} images.`);
         gallery.insertAdjacentHTML('beforeend', galleryMarkup(hits));
         lightBox.refresh();
       },
@@ -78,7 +78,7 @@ const galleryMarkup = (data) => {
     `).join('');
   };
 
-  const loadMoreHandler = () => {
+  const loadMoreImg = () => {
     pageCounter++;
     getImages(inputValue).then(res => {
         const { hits } = res.data;
@@ -87,7 +87,7 @@ const galleryMarkup = (data) => {
         lightBox.refresh();
         loading.classList.remove('show');
         if (pagesCount === pageCounter) {
-            return Notiflix.Notify.failure(`We're sorry, but you've reached the end of search results.`);
+         return Notify.failure(`We're sorry, but you've reached the end of search results.`);
         }
     });
   };
@@ -96,6 +96,6 @@ const galleryMarkup = (data) => {
     let ViewportHeight = document.querySelector('body').clientHeight;
     let position = ViewportHeight - window.scrollY;
     if (position - window.innerHeight <= ViewportHeight + 0.10 && pageCounter < pagesCount) {
-        loadMoreHandler(pageCounter)
+        loadMoreImg(pageCounter)
     }
   }, 300));
