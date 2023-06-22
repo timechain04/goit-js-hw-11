@@ -1,11 +1,10 @@
 import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import _ from 'lodash';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const getEl = el => document.querySelector(el);
-
 const gallery = getEl('.gallery');
 const form = getEl('#search-form');
 const formBtn = getEl('#search-form button');
@@ -45,7 +44,25 @@ const getImages = (value) => {
   });
 };
 
-
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  gallery.innerHTML = '';
+  pageCounter = 1;
+  getImages(inputValue)
+    .then(res => {
+        const { hits, totalHits } = res.data;
+        pagesCount = Math.ceil(totalHits / perPage);
+        if (hits.length === 0) {
+          gallery.innerHTML = '';
+          return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+        }
+        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+        gallery.insertAdjacentHTML('beforeend', galleryMarkup(hits));
+        lightBox.refresh();
+      },
+    )
+    .catch(error => console.log(error));
+});
 
 const galleryMarkup = (data) => {
     return data.map(({ webformatURL, tags, likes, views, comments, downloads, largeImageURL }) => `
@@ -61,3 +78,24 @@ const galleryMarkup = (data) => {
     `).join('');
   };
 
+  const loadMoreHandler = () => {
+    pageCounter++;
+    getImages(inputValue).then(res => {
+        const { hits } = res.data;
+        loading.classList.add('show');
+        gallery.insertAdjacentHTML('beforeend', galleryMarkup(hits));
+        lightBox.refresh();
+        loading.classList.remove('show');
+        if (pagesCount === pageCounter) {
+            return Notiflix.Notify.failure(`We're sorry, but you've reached the end of search results.`);
+        }
+    });
+  };
+
+  window.addEventListener('scroll', _.debounce(() => {
+    let ViewportHeight = document.querySelector('body').clientHeight;
+    let position = ViewportHeight - window.scrollY;
+    if (position - window.innerHeight <= ViewportHeight + 0.10 && pageCounter < pagesCount) {
+        loadMoreHandler(pageCounter)
+    }
+  }, 300));
