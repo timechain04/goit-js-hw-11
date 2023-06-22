@@ -1,13 +1,13 @@
-*,
-*::after,
-*::before {
+ *,
+ *::after,
+ *::before {
   box-sizing: border-box;
-}
+ }
 
-:root {
+  :root {
   --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   --animation-duration: 250ms;
-}
+ }
   
   .gallery {
     margin: 85px auto 85px auto;
