@@ -22,8 +22,8 @@ const lightBox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-formInput.addEventListener('input', (e) => {
-  inputValue = e.target.value;
+formInput.addEventListener('input', (event) => {
+  inputValue = event.target.value;
   if (inputValue.length > 0) {
     formBtn.removeAttribute('disabled');
   } else {
@@ -45,8 +45,8 @@ const getImages = (value) => {
   });
 };
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
+form.addEventListener('submit', event => {
+  event.preventDefault();
   gallery.innerHTML = '';
   pageCounter = 1;
   getImages(inputValue)
@@ -100,7 +100,6 @@ window.addEventListener('scroll', _.debounce(() => {
   if (position - window.innerHeight <= clientViewportHeight * 0.10 && pageCounter < pagesCount) {
     loadMoreHandler(pageCounter);
   }
-
 }, 300));
 
 
